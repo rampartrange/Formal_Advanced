@@ -62,13 +62,14 @@
     class AndExpression;
     class OrExpression;
     class XorExpression;
+    class NotExpression;
 
     class Assignment;
     class AssignmentList;
 
     class Program;
 
-#line 72 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
+#line 73 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -202,7 +203,7 @@
 #endif
 
 namespace yy {
-#line 206 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
+#line 207 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
 
 
 
@@ -432,6 +433,8 @@ namespace yy {
       char dummy5[sizeof (int)];
 
       // "identifier"
+      // "type"
+      // "boolconst"
       // CMP
       char dummy6[sizeof (std::string)];
     };
@@ -482,25 +485,35 @@ namespace yy {
       enum token_kind_type
       {
         TOK_YYEMPTY = -2,
-    TOK_END = 0,                   // "end of file"
+    TOK_EOF = 0,                   // "end of file"
     TOK_YYerror = 256,             // error
     TOK_YYUNDEF = 257,             // "invalid token"
-    TOK_ASSIGN = 258,              // ":="
-    TOK_MINUS = 259,               // "-"
-    TOK_PLUS = 260,                // "+"
-    TOK_STAR = 261,                // "*"
-    TOK_DIV = 262,                 // "/"
-    TOK_MOD = 263,                 // "%"
-    TOK_AND = 264,                 // "&&"
-    TOK_OR = 265,                  // "||"
-    TOK_XOR = 266,                 // "^"
-    TOK_LPAREN = 267,              // "("
-    TOK_RPAREN = 268,              // ")"
-    TOK_i = 269,                   // i
-    TOK_IDENTIFIER = 270,          // "identifier"
-    TOK_NUMBER = 271,              // "number"
-    TOK_CMP = 272,                 // CMP
-    TOK_UMINUS = 273               // UMINUS
+    TOK_BEGIN = 258,               // "begin"
+    TOK_END = 259,                 // "end"
+    TOK_VAR = 260,                 // "var"
+    TOK_ASSIGN = 261,              // ":="
+    TOK_MINUS = 262,               // "-"
+    TOK_PLUS = 263,                // "+"
+    TOK_STAR = 264,                // "*"
+    TOK_DIV = 265,                 // "/"
+    TOK_MOD = 266,                 // "%"
+    TOK_AND = 267,                 // "&&"
+    TOK_OR = 268,                  // "||"
+    TOK_XOR = 269,                 // "^"
+    TOK_NOT = 270,                 // "!"
+    TOK_LPAREN = 271,              // "("
+    TOK_RPAREN = 272,              // ")"
+    TOK_SEMICOLON = 273,           // ";"
+    TOK_POINT = 274,               // "."
+    TOK_COMMA = 275,               // ","
+    TOK_i = 276,                   // i
+    TOK_COLON = 277,               // ":"
+    TOK_IDENTIFIER = 278,          // "identifier"
+    TOK_TYPE = 279,                // "type"
+    TOK_BOOLCONST = 280,           // "boolconst"
+    TOK_NUMBER = 281,              // "number"
+    TOK_CMP = 282,                 // CMP
+    TOK_UMINUS = 283               // UMINUS
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -517,32 +530,42 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 19, ///< Number of tokens.
+        YYNTOKENS = 29, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
         S_YYUNDEF = 2,                           // "invalid token"
-        S_ASSIGN = 3,                            // ":="
-        S_MINUS = 4,                             // "-"
-        S_PLUS = 5,                              // "+"
-        S_STAR = 6,                              // "*"
-        S_DIV = 7,                               // "/"
-        S_MOD = 8,                               // "%"
-        S_AND = 9,                               // "&&"
-        S_OR = 10,                               // "||"
-        S_XOR = 11,                              // "^"
-        S_LPAREN = 12,                           // "("
-        S_RPAREN = 13,                           // ")"
-        S_i = 14,                                // i
-        S_IDENTIFIER = 15,                       // "identifier"
-        S_NUMBER = 16,                           // "number"
-        S_CMP = 17,                              // CMP
-        S_UMINUS = 18,                           // UMINUS
-        S_YYACCEPT = 19,                         // $accept
-        S_unit = 20,                             // unit
-        S_assignments = 21,                      // assignments
-        S_assignment = 22,                       // assignment
-        S_exp = 23                               // exp
+        S_BEGIN = 3,                             // "begin"
+        S_END = 4,                               // "end"
+        S_VAR = 5,                               // "var"
+        S_ASSIGN = 6,                            // ":="
+        S_MINUS = 7,                             // "-"
+        S_PLUS = 8,                              // "+"
+        S_STAR = 9,                              // "*"
+        S_DIV = 10,                              // "/"
+        S_MOD = 11,                              // "%"
+        S_AND = 12,                              // "&&"
+        S_OR = 13,                               // "||"
+        S_XOR = 14,                              // "^"
+        S_NOT = 15,                              // "!"
+        S_LPAREN = 16,                           // "("
+        S_RPAREN = 17,                           // ")"
+        S_SEMICOLON = 18,                        // ";"
+        S_POINT = 19,                            // "."
+        S_COMMA = 20,                            // ","
+        S_i = 21,                                // i
+        S_COLON = 22,                            // ":"
+        S_IDENTIFIER = 23,                       // "identifier"
+        S_TYPE = 24,                             // "type"
+        S_BOOLCONST = 25,                        // "boolconst"
+        S_NUMBER = 26,                           // "number"
+        S_CMP = 27,                              // CMP
+        S_UMINUS = 28,                           // UMINUS
+        S_YYACCEPT = 29,                         // $accept
+        S_unit = 30,                             // unit
+        S_assignments = 31,                      // assignments
+        S_assignment = 32,                       // assignment
+        S_exp = 33                               // exp
       };
     };
 
@@ -600,6 +623,8 @@ namespace yy {
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
+      case symbol_kind::S_TYPE: // "type"
+      case symbol_kind::S_BOOLCONST: // "boolconst"
       case symbol_kind::S_CMP: // CMP
         value.move< std::string > (std::move (that.value));
         break;
@@ -754,6 +779,8 @@ switch (yykind)
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
+      case symbol_kind::S_TYPE: // "type"
+      case symbol_kind::S_BOOLCONST: // "boolconst"
       case symbol_kind::S_CMP: // CMP
         value.template destroy< std::string > ();
         break;
@@ -852,8 +879,8 @@ switch (yykind)
         : super_type(token_type (tok), l)
 #endif
       {
-        YY_ASSERT (tok == token::TOK_END
-                   || (token::TOK_YYerror <= tok && tok <= token::TOK_i)
+        YY_ASSERT (tok == token::TOK_EOF
+                   || (token::TOK_YYerror <= tok && tok <= token::TOK_COLON)
                    || tok == token::TOK_UMINUS);
       }
 #if 201103L <= YY_CPLUSPLUS
@@ -874,7 +901,7 @@ switch (yykind)
         : super_type(token_type (tok), v, l)
 #endif
       {
-        YY_ASSERT (tok == token::TOK_IDENTIFIER
+        YY_ASSERT ((token::TOK_IDENTIFIER <= tok && tok <= token::TOK_BOOLCONST)
                    || tok == token::TOK_CMP);
       }
     };
@@ -928,16 +955,16 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_END (location_type l)
+      make_EOF (location_type l)
       {
-        return symbol_type (token::TOK_END, std::move (l));
+        return symbol_type (token::TOK_EOF, std::move (l));
       }
 #else
       static
       symbol_type
-      make_END (const location_type& l)
+      make_EOF (const location_type& l)
       {
-        return symbol_type (token::TOK_END, l);
+        return symbol_type (token::TOK_EOF, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -968,6 +995,51 @@ switch (yykind)
       make_YYUNDEF (const location_type& l)
       {
         return symbol_type (token::TOK_YYUNDEF, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_BEGIN (location_type l)
+      {
+        return symbol_type (token::TOK_BEGIN, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_BEGIN (const location_type& l)
+      {
+        return symbol_type (token::TOK_BEGIN, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_END (location_type l)
+      {
+        return symbol_type (token::TOK_END, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_END (const location_type& l)
+      {
+        return symbol_type (token::TOK_END, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_VAR (location_type l)
+      {
+        return symbol_type (token::TOK_VAR, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_VAR (const location_type& l)
+      {
+        return symbol_type (token::TOK_VAR, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1108,6 +1180,21 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_NOT (location_type l)
+      {
+        return symbol_type (token::TOK_NOT, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_NOT (const location_type& l)
+      {
+        return symbol_type (token::TOK_NOT, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_LPAREN (location_type l)
       {
         return symbol_type (token::TOK_LPAREN, std::move (l));
@@ -1138,6 +1225,51 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_SEMICOLON (location_type l)
+      {
+        return symbol_type (token::TOK_SEMICOLON, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_SEMICOLON (const location_type& l)
+      {
+        return symbol_type (token::TOK_SEMICOLON, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_POINT (location_type l)
+      {
+        return symbol_type (token::TOK_POINT, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_POINT (const location_type& l)
+      {
+        return symbol_type (token::TOK_POINT, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_COMMA (location_type l)
+      {
+        return symbol_type (token::TOK_COMMA, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_COMMA (const location_type& l)
+      {
+        return symbol_type (token::TOK_COMMA, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_i (location_type l)
       {
         return symbol_type (token::TOK_i, std::move (l));
@@ -1153,6 +1285,21 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_COLON (location_type l)
+      {
+        return symbol_type (token::TOK_COLON, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_COLON (const location_type& l)
+      {
+        return symbol_type (token::TOK_COLON, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_IDENTIFIER (std::string v, location_type l)
       {
         return symbol_type (token::TOK_IDENTIFIER, std::move (v), std::move (l));
@@ -1163,6 +1310,36 @@ switch (yykind)
       make_IDENTIFIER (const std::string& v, const location_type& l)
       {
         return symbol_type (token::TOK_IDENTIFIER, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_TYPE (std::string v, location_type l)
+      {
+        return symbol_type (token::TOK_TYPE, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_TYPE (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::TOK_TYPE, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_BOOLCONST (std::string v, location_type l)
+      {
+        return symbol_type (token::TOK_BOOLCONST, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_BOOLCONST (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::TOK_BOOLCONST, v, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1540,7 +1717,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 69,     ///< Last index in yytable_.
+      yylast_ = 74,     ///< Last index in yytable_.
       yynnts_ = 5,  ///< Number of nonterminal symbols.
       yyfinal_ = 3 ///< Termination state number.
     };
@@ -1589,10 +1766,11 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28
     };
     // Last valid token kind.
-    const int code_max = 273;
+    const int code_max = 283;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1632,6 +1810,8 @@ switch (yykind)
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
+      case symbol_kind::S_TYPE: // "type"
+      case symbol_kind::S_BOOLCONST: // "boolconst"
       case symbol_kind::S_CMP: // CMP
         value.copy< std::string > (YY_MOVE (that.value));
         break;
@@ -1686,6 +1866,8 @@ switch (yykind)
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
+      case symbol_kind::S_TYPE: // "type"
+      case symbol_kind::S_BOOLCONST: // "boolconst"
       case symbol_kind::S_CMP: // CMP
         value.move< std::string > (YY_MOVE (s.value));
         break;
@@ -1752,7 +1934,7 @@ switch (yykind)
   }
 
 } // yy
-#line 1756 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
+#line 1938 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
 
 
 

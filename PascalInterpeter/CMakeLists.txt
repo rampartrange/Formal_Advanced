@@ -42,8 +42,10 @@ add_executable(
         expressions/AndExpression.cpp
         expressions/OrExpression.cpp
         expressions/XorExpression.cpp
+        expressions/NotExpression.cpp
         assignments/Assignment.cpp
         assignments/AssignmentList.cpp
+        objects/PascalObject.cpp
         Program.cpp
 )
 

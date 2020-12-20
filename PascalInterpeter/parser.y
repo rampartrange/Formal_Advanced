@@ -22,6 +22,7 @@
     class AndExpression;
     class OrExpression;
     class XorExpression;
+    class NotExpression;
 
     class Assignment;
     class AssignmentList;
@@ -51,6 +52,7 @@
     #include "expressions/AndExpression.h"
     #include "expressions/OrExpression.h"
     #include "expressions/XorExpression.h"
+    #include "expressions/NotExpression.h"
 
     #include "assignments/Assignment.h"
     #include "assignments/AssignmentList.h"
@@ -71,26 +73,42 @@
 %define api.token.prefix {TOK_}
 
 %token
-    END 0 "end of file"
+    EOF 0       "end of file"
     
-    ASSIGN ":="
-    
-    MINUS "-"
-    PLUS "+"
-    STAR "*"
-    DIV  "/"
-    MOD  "%"
-    
-    AND "&&"
-    OR  "||"
-    XOR "^"
+    BEGIN       "begin"
+    END         "end"
 
-    LPAREN "("
-    RPAREN ")"i
+    VAR         "var"
+
+    ASSIGN      ":="
+    
+    MINUS       "-"
+    PLUS        "+"
+    STAR        "*"
+    DIV         "/"
+    MOD         "%"
+    
+    AND         "&&"
+    OR          "||"
+    XOR         "^"
+    NOT         "!"
+
+    LPAREN      "("
+    RPAREN      ")"
+
+    SEMICOLON   ";"
+    POINT       "."
+    COMMA       ","i
+    COLON       ":"
 ;
 
-%token <std::string> IDENTIFIER "identifier"
+%token <std::string> 
+    IDENTIFIER "identifier"
+    TYPE       "type"
+    BOOLCONST  "boolconst"
+
 %token <int> NUMBER "number"
+
 %nterm <Expression*> exp
 %nterm <Assignment*> assignment
 %nterm <AssignmentList*> assignments
@@ -104,6 +122,7 @@
 %left "+" "-" "||" "^"
 %left "*" "/" "%" "&&"
 %nonassoc UMINUS
+%nonassoc "!"
 
 
 %start unit
@@ -137,6 +156,7 @@ exp:
     | exp "&&" exp { $$ = new AndExpression($1, $3); }
     | exp "||" exp { $$ = new OrExpression($1, $3); }
     | exp "^" exp   { $$ = new XorExpression($1, $3); }
+    | "!" exp       { $$ = new NotExpression($2); }
     | "(" exp ")" { $$ = $2; };
     | "-" exp %prec UMINUS { $$ = new UnaryMinusExpression($2); }
 

@@ -25,7 +25,9 @@
 id    [a-zA-Z][a-zA-Z_0-9]*
 int   [0-9]+
 blank [ \t\r]
-cmp   "<"|">"|"<="|">="|"=="|"<>"
+real  {int}"."{int}([eE][+-]{int})?
+cmp   "<"|">"|"<="|">="|"="|"<>"
+type  integer|boolean|real
 
 
 %{
@@ -55,11 +57,17 @@ cmp   "<"|">"|"<="|">="|"=="|"<>"
 "and"      return yy::parser::make_AND    (loc);
 "or"       return yy::parser::make_OR     (loc);
 "xor"      return yy::parser::make_XOR    (loc);
+"not"      return yy::parser::make_NOT    (loc);
 
 "("        return yy::parser::make_LPAREN (loc);
 ")"        return yy::parser::make_RPAREN (loc);
 
 ":="       return yy::parser::make_ASSIGN (loc);
+
+","        return yy::parser::make_COMMA  (loc);
+"."        return yy::parser::make_POINT (loc);
+";"        return yy::parser::make_SEMICOLON (loc);
+":"        return yy::parser::make_COLON  (loc);
 
 {cmp}      return yy::parser::make_CMP    (yytext, loc);
 {int}      return make_NUMBER(yytext, loc);
