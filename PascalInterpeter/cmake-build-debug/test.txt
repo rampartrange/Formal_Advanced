@@ -1,4 +1,0 @@
-a := 3 * 10
-b := not (a > 3) and false
-c := "asdasd" + "sadasd"
-d := 3.14 * 3.14

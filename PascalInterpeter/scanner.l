@@ -28,6 +28,10 @@
     const std::string &s,
     const yy::parser::location_type& loc
   ); 
+  yy::parser::symbol_type make_STRING(
+    const std::string &s,
+    const yy::parser::location_type& loc
+  ); 
 %}
 
 id    [a-zA-Z][a-zA-Z_0-9]*
@@ -82,7 +86,7 @@ type  integer|boolean|real
 {cmp}      return yy::parser::make_CMP    (yytext, loc);
 {int}      return make_INTEGER(yytext, loc);
 {real}     return make_REAL(yytext, loc);
-{string}   return yy::parser::make_STRING(yytext, loc);
+{string}   return make_STRING(yytext, loc);
 {bool}     return make_BOOL(yytext, loc);
 {id}       return yy::parser::make_IDENTIFIER(yytext, loc);
 .          {
@@ -116,4 +120,12 @@ yy::parser::symbol_type make_BOOL(
 ) {
   bool n = (s == "true") ? true : false;
   return yy::parser::make_BOOL(n, loc);
+}
+
+yy::parser::symbol_type make_STRING(
+  const std::string& s,
+  const yy::parser::location_type& loc
+) {
+  int size = s.length();
+  return yy::parser::make_STRING(s.substr(1, size - 2), loc);
 }
