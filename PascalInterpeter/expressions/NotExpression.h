@@ -1,11 +1,11 @@
 #pragma once
 #include "Expression.h"
+#include "../objects/PascalObject.h"
 
 class NotExpression: public Expression {
 public:
     NotExpression(Expression* lhs);
-    int eval() const override;
+    PascalObject eval() const override;
 private:
     Expression* lhs;
-    int value;
 };

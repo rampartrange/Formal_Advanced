@@ -4,6 +4,6 @@ AndExpression::AndExpression(
         Expression *lhs, Expression *rhs
 ): lhs(lhs), rhs(rhs) {}
 
-int AndExpression::eval() const {
-    return lhs->eval() && rhs->eval();
+PascalObject AndExpression::eval() const {
+    return PascalObject(lhs->eval() && rhs->eval());
 }

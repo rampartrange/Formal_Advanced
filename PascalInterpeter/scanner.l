@@ -16,16 +16,26 @@
 
 %{
   // A number symbol corresponding to the value in S.
-  yy::parser::symbol_type make_NUMBER(
+  yy::parser::symbol_type make_INTEGER(
     const std::string &s,
     const yy::parser::location_type& loc
   );
+  yy::parser::symbol_type make_REAL(
+    const std::string &s,
+    const yy::parser::location_type& loc
+  );
+  yy::parser::symbol_type make_BOOL(
+    const std::string &s,
+    const yy::parser::location_type& loc
+  ); 
 %}
 
 id    [a-zA-Z][a-zA-Z_0-9]*
 int   [0-9]+
 blank [ \t\r]
 real  {int}"."{int}([eE][+-]{int})?
+bool  false|true
+string "\""([^\n\"\\]*(\\[.\n])*)*"\""
 cmp   "<"|">"|"<="|">="|"="|"<>"
 type  integer|boolean|real
 
@@ -70,7 +80,10 @@ type  integer|boolean|real
 ":"        return yy::parser::make_COLON  (loc);
 
 {cmp}      return yy::parser::make_CMP    (yytext, loc);
-{int}      return make_NUMBER(yytext, loc);
+{int}      return make_INTEGER(yytext, loc);
+{real}     return make_REAL(yytext, loc);
+{string}   return yy::parser::make_STRING(yytext, loc);
+{bool}     return make_BOOL(yytext, loc);
 {id}       return yy::parser::make_IDENTIFIER(yytext, loc);
 .          {
                 throw yy::parser::syntax_error(loc, "invalid character: " + std::string(yytext));
@@ -78,7 +91,7 @@ type  integer|boolean|real
 <<EOF>>    return yy::parser::make_END (loc);
 %%
 
-yy::parser::symbol_type make_NUMBER(
+yy::parser::symbol_type make_INTEGER(
   const std::string &s,
   const yy::parser::location_type& loc
 ) {
@@ -86,5 +99,21 @@ yy::parser::symbol_type make_NUMBER(
   long n = strtol(s.c_str(), NULL, 10);
   if (! (INT_MIN <= n && n <= INT_MAX && errno != ERANGE))
     throw yy::parser::syntax_error(loc, "integer is out of range: " + s);
-  return yy::parser::make_NUMBER((int) n, loc);
+  return yy::parser::make_INTEGER((int) n, loc);
+}
+
+yy::parser::symbol_type make_REAL(
+  const std::string &s,
+  const yy::parser::location_type& loc
+) {
+  double n = stod(s);
+  return yy::parser::make_REAL(n, loc);
+}
+
+yy::parser::symbol_type make_BOOL(
+  const std::string &s,
+  const yy::parser::location_type& loc
+) {
+  bool n = (s == "true") ? true : false;
+  return yy::parser::make_BOOL(n, loc);
 }

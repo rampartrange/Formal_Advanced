@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/rampartrange/CompilersCourse/03-parsers-with-ast/objects/PascalObject.cpp
+PascalObject.h
+/Users/rampartrange/CompilersCourse/03-parsers-with-ast/objects/PascalObject.h
+utility
+-
+
+/Users/rampartrange/CompilersCourse/03-parsers-with-ast/objects/PascalObject.h
+string
+-
+iostream
+-
+

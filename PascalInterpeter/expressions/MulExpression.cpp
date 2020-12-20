@@ -4,6 +4,6 @@ MulExpression::MulExpression(
     Expression *lhs, Expression *rhs
 ): lhs(lhs), rhs(rhs) {}
 
-int MulExpression::eval() const {
+PascalObject MulExpression::eval() const {
     return lhs->eval() * rhs->eval();
 }

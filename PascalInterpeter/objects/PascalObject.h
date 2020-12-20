@@ -1,6 +1,7 @@
+#pragma once
+
 #include <string>
 #include <iostream>
-#include <sstream>
 
 enum class ObjectType {
     INTEGER,
@@ -31,6 +32,7 @@ public:
     std::string GetStringValue() const;
     bool GetBoolValue() const;
 
+    friend PascalObject operator-(const PascalObject& lhs);
     friend PascalObject operator+(const PascalObject& lhs, const PascalObject& rhs);
     friend PascalObject operator-(const PascalObject& lhs, const PascalObject& rhs);
     friend PascalObject operator*(const PascalObject& lhs, const PascalObject& rhs);

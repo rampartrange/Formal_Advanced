@@ -2,6 +2,6 @@
 
 NotExpression::NotExpression(Expression* lhs) : lhs(lhs) {}
 
-int NotExpression::eval() const {
-    return !(lhs->eval());
+PascalObject NotExpression::eval() const {
+    return PascalObject(!(lhs->eval()));
 }

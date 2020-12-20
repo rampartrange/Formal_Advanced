@@ -51,7 +51,7 @@
     class Scanner;
     class Driver;
     class Expression;
-    class NumberExpression;
+    class ObjectExpression;
     class AddExpression;
     class SubstractExpression;
     class DivExpression;
@@ -64,12 +64,14 @@
     class XorExpression;
     class NotExpression;
 
+    class PascalObject;
+
     class Assignment;
     class AssignmentList;
 
     class Program;
 
-#line 73 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
+#line 75 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -203,7 +205,7 @@
 #endif
 
 namespace yy {
-#line 207 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
+#line 209 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
 
 
 
@@ -429,14 +431,20 @@ namespace yy {
       // unit
       char dummy4[sizeof (Program*)];
 
-      // "number"
-      char dummy5[sizeof (int)];
+      // "bool"
+      char dummy5[sizeof (bool)];
+
+      // "real"
+      char dummy6[sizeof (double)];
+
+      // "integer"
+      char dummy7[sizeof (int)];
 
       // "identifier"
       // "type"
-      // "boolconst"
+      // "string"
       // CMP
-      char dummy6[sizeof (std::string)];
+      char dummy8[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -510,10 +518,12 @@ namespace yy {
     TOK_COLON = 277,               // ":"
     TOK_IDENTIFIER = 278,          // "identifier"
     TOK_TYPE = 279,                // "type"
-    TOK_BOOLCONST = 280,           // "boolconst"
-    TOK_NUMBER = 281,              // "number"
-    TOK_CMP = 282,                 // CMP
-    TOK_UMINUS = 283               // UMINUS
+    TOK_INTEGER = 280,             // "integer"
+    TOK_REAL = 281,                // "real"
+    TOK_STRING = 282,              // "string"
+    TOK_BOOL = 283,                // "bool"
+    TOK_CMP = 284,                 // CMP
+    TOK_UMINUS = 285               // UMINUS
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -530,7 +540,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 29, ///< Number of tokens.
+        YYNTOKENS = 31, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -557,15 +567,17 @@ namespace yy {
         S_COLON = 22,                            // ":"
         S_IDENTIFIER = 23,                       // "identifier"
         S_TYPE = 24,                             // "type"
-        S_BOOLCONST = 25,                        // "boolconst"
-        S_NUMBER = 26,                           // "number"
-        S_CMP = 27,                              // CMP
-        S_UMINUS = 28,                           // UMINUS
-        S_YYACCEPT = 29,                         // $accept
-        S_unit = 30,                             // unit
-        S_assignments = 31,                      // assignments
-        S_assignment = 32,                       // assignment
-        S_exp = 33                               // exp
+        S_INTEGER = 25,                          // "integer"
+        S_REAL = 26,                             // "real"
+        S_STRING = 27,                           // "string"
+        S_BOOL = 28,                             // "bool"
+        S_CMP = 29,                              // CMP
+        S_UMINUS = 30,                           // UMINUS
+        S_YYACCEPT = 31,                         // $accept
+        S_unit = 32,                             // unit
+        S_assignments = 33,                      // assignments
+        S_assignment = 34,                       // assignment
+        S_exp = 35                               // exp
       };
     };
 
@@ -618,13 +630,21 @@ namespace yy {
         value.move< Program* > (std::move (that.value));
         break;
 
-      case symbol_kind::S_NUMBER: // "number"
+      case symbol_kind::S_BOOL: // "bool"
+        value.move< bool > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_REAL: // "real"
+        value.move< double > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
         value.move< int > (std::move (that.value));
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_TYPE: // "type"
-      case symbol_kind::S_BOOLCONST: // "boolconst"
+      case symbol_kind::S_STRING: // "string"
       case symbol_kind::S_CMP: // CMP
         value.move< std::string > (std::move (that.value));
         break;
@@ -709,6 +729,34 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, bool&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const bool& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, double&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const double& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
       basic_symbol (typename Base::kind_type t, int&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
@@ -774,13 +822,21 @@ switch (yykind)
         value.template destroy< Program* > ();
         break;
 
-      case symbol_kind::S_NUMBER: // "number"
+      case symbol_kind::S_BOOL: // "bool"
+        value.template destroy< bool > ();
+        break;
+
+      case symbol_kind::S_REAL: // "real"
+        value.template destroy< double > ();
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
         value.template destroy< int > ();
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_TYPE: // "type"
-      case symbol_kind::S_BOOLCONST: // "boolconst"
+      case symbol_kind::S_STRING: // "string"
       case symbol_kind::S_CMP: // CMP
         value.template destroy< std::string > ();
         break;
@@ -884,6 +940,26 @@ switch (yykind)
                    || tok == token::TOK_UMINUS);
       }
 #if 201103L <= YY_CPLUSPLUS
+      symbol_type (int tok, bool v, location_type l)
+        : super_type(token_type (tok), std::move (v), std::move (l))
+#else
+      symbol_type (int tok, const bool& v, const location_type& l)
+        : super_type(token_type (tok), v, l)
+#endif
+      {
+        YY_ASSERT (tok == token::TOK_BOOL);
+      }
+#if 201103L <= YY_CPLUSPLUS
+      symbol_type (int tok, double v, location_type l)
+        : super_type(token_type (tok), std::move (v), std::move (l))
+#else
+      symbol_type (int tok, const double& v, const location_type& l)
+        : super_type(token_type (tok), v, l)
+#endif
+      {
+        YY_ASSERT (tok == token::TOK_REAL);
+      }
+#if 201103L <= YY_CPLUSPLUS
       symbol_type (int tok, int v, location_type l)
         : super_type(token_type (tok), std::move (v), std::move (l))
 #else
@@ -891,7 +967,7 @@ switch (yykind)
         : super_type(token_type (tok), v, l)
 #endif
       {
-        YY_ASSERT (tok == token::TOK_NUMBER);
+        YY_ASSERT (tok == token::TOK_INTEGER);
       }
 #if 201103L <= YY_CPLUSPLUS
       symbol_type (int tok, std::string v, location_type l)
@@ -901,7 +977,8 @@ switch (yykind)
         : super_type(token_type (tok), v, l)
 #endif
       {
-        YY_ASSERT ((token::TOK_IDENTIFIER <= tok && tok <= token::TOK_BOOLCONST)
+        YY_ASSERT ((token::TOK_IDENTIFIER <= tok && tok <= token::TOK_TYPE)
+                   || tok == token::TOK_STRING
                    || tok == token::TOK_CMP);
       }
     };
@@ -1330,31 +1407,61 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_BOOLCONST (std::string v, location_type l)
+      make_INTEGER (int v, location_type l)
       {
-        return symbol_type (token::TOK_BOOLCONST, std::move (v), std::move (l));
+        return symbol_type (token::TOK_INTEGER, std::move (v), std::move (l));
       }
 #else
       static
       symbol_type
-      make_BOOLCONST (const std::string& v, const location_type& l)
+      make_INTEGER (const int& v, const location_type& l)
       {
-        return symbol_type (token::TOK_BOOLCONST, v, l);
+        return symbol_type (token::TOK_INTEGER, v, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_NUMBER (int v, location_type l)
+      make_REAL (double v, location_type l)
       {
-        return symbol_type (token::TOK_NUMBER, std::move (v), std::move (l));
+        return symbol_type (token::TOK_REAL, std::move (v), std::move (l));
       }
 #else
       static
       symbol_type
-      make_NUMBER (const int& v, const location_type& l)
+      make_REAL (const double& v, const location_type& l)
       {
-        return symbol_type (token::TOK_NUMBER, v, l);
+        return symbol_type (token::TOK_REAL, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STRING (std::string v, location_type l)
+      {
+        return symbol_type (token::TOK_STRING, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_STRING (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::TOK_STRING, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_BOOL (bool v, location_type l)
+      {
+        return symbol_type (token::TOK_BOOL, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_BOOL (const bool& v, const location_type& l)
+      {
+        return symbol_type (token::TOK_BOOL, v, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1717,7 +1824,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 74,     ///< Last index in yytable_.
+      yylast_ = 91,     ///< Last index in yytable_.
       yynnts_ = 5,  ///< Number of nonterminal symbols.
       yyfinal_ = 3 ///< Termination state number.
     };
@@ -1767,10 +1874,10 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28
+      25,    26,    27,    28,    29,    30
     };
     // Last valid token kind.
-    const int code_max = 283;
+    const int code_max = 285;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1805,13 +1912,21 @@ switch (yykind)
         value.copy< Program* > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_NUMBER: // "number"
+      case symbol_kind::S_BOOL: // "bool"
+        value.copy< bool > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_REAL: // "real"
+        value.copy< double > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
         value.copy< int > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_TYPE: // "type"
-      case symbol_kind::S_BOOLCONST: // "boolconst"
+      case symbol_kind::S_STRING: // "string"
       case symbol_kind::S_CMP: // CMP
         value.copy< std::string > (YY_MOVE (that.value));
         break;
@@ -1861,13 +1976,21 @@ switch (yykind)
         value.move< Program* > (YY_MOVE (s.value));
         break;
 
-      case symbol_kind::S_NUMBER: // "number"
+      case symbol_kind::S_BOOL: // "bool"
+        value.move< bool > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_REAL: // "real"
+        value.move< double > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
         value.move< int > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_TYPE: // "type"
-      case symbol_kind::S_BOOLCONST: // "boolconst"
+      case symbol_kind::S_STRING: // "string"
       case symbol_kind::S_CMP: // CMP
         value.move< std::string > (YY_MOVE (s.value));
         break;
@@ -1934,7 +2057,7 @@ switch (yykind)
   }
 
 } // yy
-#line 1938 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
+#line 2061 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
 
 
 

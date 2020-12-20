@@ -60,6 +60,21 @@ bool PascalObject::GetBoolValue() const {
     return boolValue;
 }
 
+
+PascalObject operator-(const PascalObject& lhs) {
+    ObjectType type = lhs.GetType();
+    switch (type) {
+        case ObjectType::INTEGER : {
+            return PascalObject(-lhs.GetIntValue());
+        }
+        case ObjectType::REAL : {
+            return PascalObject(-lhs.GetDoubleValue());
+        }
+        default:
+            return PascalObject();
+    }
+}
+
 PascalObject operator+(const PascalObject& lhs, const PascalObject& rhs) {
     ObjectType type = lhs.GetType();
     if (!AreTypesCorrect(lhs, rhs)) {
@@ -246,4 +261,30 @@ std::istream& operator>>(std::istream& in, PascalObject& obj) {
         obj = PascalObject(input);
     }
     return in;
+}
+
+PascalObject::operator bool() const {
+    bool result;
+    switch (type) {
+        case ObjectType::INTEGER : {
+            result = GetIntValue() != 0;
+            break;
+        }
+        case ObjectType::REAL : {
+            result = GetDoubleValue() != 0;
+            break;
+        }
+        case ObjectType::STRING : {
+            result = !GetStringValue().empty();
+            break;
+        }
+        case ObjectType::BOOLEAN : {
+            result = GetBoolValue();
+            break;
+        }
+        default:
+            result = false;
+            break;
+    }
+    return result;
 }

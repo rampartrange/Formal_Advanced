@@ -30,7 +30,7 @@ add_executable(
         driver.cpp
         ${BISON_MyParserWithAst_OUTPUTS}
         ${FLEX_MyScannerWithAst_OUTPUTS}
-        expressions/NumberExpression.cpp
+        expressions/ObjectExpression.cpp
         expressions/MulExpression.cpp
         expressions/AddExpression.cpp
         expressions/SubstractExpression.cpp

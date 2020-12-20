@@ -27,7 +27,7 @@ ComparisonType ComparisonExpression::DefineComparisonType(const std::string &sig
 }
 
 int ComparisonExpression::ComputeValue() {
-    int result = 0;
+    bool result = 0;
     switch (type) {
         case ComparisonType::LT : {
             result = lhs->eval() < rhs->eval();
@@ -58,6 +58,6 @@ int ComparisonExpression::ComputeValue() {
 }
 
 
-int ComparisonExpression::eval() const {
+PascalObject ComparisonExpression::eval() const {
     return value;
 }

@@ -11,7 +11,7 @@
     class Scanner;
     class Driver;
     class Expression;
-    class NumberExpression;
+    class ObjectExpression;
     class AddExpression;
     class SubstractExpression;
     class DivExpression;
@@ -23,6 +23,8 @@
     class OrExpression;
     class XorExpression;
     class NotExpression;
+
+    class PascalObject;
 
     class Assignment;
     class AssignmentList;
@@ -39,7 +41,7 @@
     #include "driver.hh"
     #include "location.hh"
 
-    #include "expressions/NumberExpression.h"
+    #include "expressions/ObjectExpression.h"
     #include "expressions/AddExpression.h"
     #include "expressions/MulExpression.h"
     #include "expressions/DivExpression.h"
@@ -53,6 +55,8 @@
     #include "expressions/OrExpression.h"
     #include "expressions/XorExpression.h"
     #include "expressions/NotExpression.h"
+
+    #include "objects/PascalObject.h"
 
     #include "assignments/Assignment.h"
     #include "assignments/AssignmentList.h"
@@ -105,9 +109,11 @@
 %token <std::string> 
     IDENTIFIER "identifier"
     TYPE       "type"
-    BOOLCONST  "boolconst"
 
-%token <int> NUMBER "number"
+%token <int> INTEGER "integer"
+%token <double> REAL "real"
+%token <std::string> STRING "string"
+%token <bool> BOOL "bool"
 
 %nterm <Expression*> exp
 %nterm <Assignment*> assignment
@@ -146,7 +152,10 @@ assignment:
 
 exp:
       exp CMP exp { $$ = new ComparisonExpression($1, $3, $2); }
-    | "number" {$$ = new NumberExpression($1); }
+    | "integer" { $$ = new ObjectExpression($1); }
+    | "real"    { $$ = new ObjectExpression($1); }
+    | "string"  { $$ = new ObjectExpression($1); }
+    | "bool"    { $$ = new ObjectExpression($1); }
     | "identifier" {$$ = new IdentExpression($1, driver.variables[$1]); }
     | exp "+" exp { $$ = new AddExpression($1, $3); }
     | exp "-" exp { $$ = new SubstractExpression($1, $3); }

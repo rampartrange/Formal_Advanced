@@ -1,7 +1,9 @@
 #include "IdentExpression.h"
 
-IdentExpression::IdentExpression(const std::string& ident, int value): ident(ident), value(value) {}
+#include <utility>
 
-int IdentExpression::eval() const {
+IdentExpression::IdentExpression(std::string  ident, PascalObject value): ident(std::move(ident)), value(value) {}
+
+PascalObject IdentExpression::eval() const {
     return value;
 }

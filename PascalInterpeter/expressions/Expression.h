@@ -1,6 +1,7 @@
 #pragma once
+#include "../objects/PascalObject.h"
 
 class Expression {
 public:
-    virtual int eval() const = 0;
+    virtual PascalObject eval() const = 0;
 };

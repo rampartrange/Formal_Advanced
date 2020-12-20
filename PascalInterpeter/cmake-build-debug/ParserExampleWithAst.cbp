@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="ParserExampleWithAst"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ParserExampleWithAst">
+				<Option output="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/ParserExampleWithAst" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/rampartrange/CompilersCourse/03-parsers-with-ast"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 ParserExampleWithAst"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ParserExampleWithAst/fast">
+				<Option output="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/ParserExampleWithAst" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/rampartrange/CompilersCourse/03-parsers-with-ast"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 ParserExampleWithAst/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/rampartrange/CompilersCourse/03-parsers-with-ast/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/Program.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/Program.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/assignments/Assignment.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/assignments/Assignment.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/assignments/AssignmentList.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/assignments/AssignmentList.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/driver.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/driver.hh">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/AddExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/AddExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/AndExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/AndExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/ComparisonExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/ComparisonExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/DivExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/DivExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/IdentExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/IdentExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/ModExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/ModExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/MulExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/MulExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/NotExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/NotExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/ObjectExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/ObjectExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/OrExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/OrExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/SubstractExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/SubstractExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/UnaryMinusExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/UnaryMinusExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/XorExpression.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/expressions/XorExpression.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/main.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/objects/PascalObject.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/objects/PascalObject.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp.rule">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/scanner.cpp">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/scanner.cpp.rule">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/scanner.h">
+			<Option target="ParserExampleWithAst"/>
+		</Unit>
+		<Unit filename="/Users/rampartrange/CompilersCourse/03-parsers-with-ast/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

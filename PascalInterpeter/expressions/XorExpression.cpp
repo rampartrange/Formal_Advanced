@@ -4,6 +4,6 @@ XorExpression::XorExpression(
         Expression *lhs, Expression *rhs
 ): lhs(lhs), rhs(rhs) {}
 
-int XorExpression::eval() const {
-    return ((lhs->eval()) ^ (rhs->eval()));
+PascalObject XorExpression::eval() const {
+    return PascalObject(static_cast<bool>(lhs->eval()) ^ static_cast<bool>(rhs->eval()));
 }

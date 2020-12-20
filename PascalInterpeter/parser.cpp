@@ -42,12 +42,12 @@
 
 
 // Unqualified %code blocks.
-#line 38 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+#line 40 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
 
     #include "driver.hh"
     #include "location.hh"
 
-    #include "expressions/NumberExpression.h"
+    #include "expressions/ObjectExpression.h"
     #include "expressions/AddExpression.h"
     #include "expressions/MulExpression.h"
     #include "expressions/DivExpression.h"
@@ -62,6 +62,8 @@
     #include "expressions/XorExpression.h"
     #include "expressions/NotExpression.h"
 
+    #include "objects/PascalObject.h"
+
     #include "assignments/Assignment.h"
     #include "assignments/AssignmentList.h"
     #include "Program.h"
@@ -70,7 +72,7 @@
         return scanner.ScanToken();
     }
 
-#line 74 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+#line 76 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
 
 
 #ifndef YY_
@@ -162,7 +164,7 @@
 #define YYRECOVERING()  (!!yyerrstatus_)
 
 namespace yy {
-#line 166 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+#line 168 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
 
   /// Build a parser object.
   parser::parser (Scanner &scanner_yyarg, Driver &driver_yyarg)
@@ -247,13 +249,21 @@ namespace yy {
         value.YY_MOVE_OR_COPY< Program* > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_NUMBER: // "number"
+      case symbol_kind::S_BOOL: // "bool"
+        value.YY_MOVE_OR_COPY< bool > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_REAL: // "real"
+        value.YY_MOVE_OR_COPY< double > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
         value.YY_MOVE_OR_COPY< int > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_TYPE: // "type"
-      case symbol_kind::S_BOOLCONST: // "boolconst"
+      case symbol_kind::S_STRING: // "string"
       case symbol_kind::S_CMP: // CMP
         value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
         break;
@@ -289,13 +299,21 @@ namespace yy {
         value.move< Program* > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_NUMBER: // "number"
+      case symbol_kind::S_BOOL: // "bool"
+        value.move< bool > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_REAL: // "real"
+        value.move< double > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
         value.move< int > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_TYPE: // "type"
-      case symbol_kind::S_BOOLCONST: // "boolconst"
+      case symbol_kind::S_STRING: // "string"
       case symbol_kind::S_CMP: // CMP
         value.move< std::string > (YY_MOVE (that.value));
         break;
@@ -331,13 +349,21 @@ namespace yy {
         value.copy< Program* > (that.value);
         break;
 
-      case symbol_kind::S_NUMBER: // "number"
+      case symbol_kind::S_BOOL: // "bool"
+        value.copy< bool > (that.value);
+        break;
+
+      case symbol_kind::S_REAL: // "real"
+        value.copy< double > (that.value);
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
         value.copy< int > (that.value);
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_TYPE: // "type"
-      case symbol_kind::S_BOOLCONST: // "boolconst"
+      case symbol_kind::S_STRING: // "string"
       case symbol_kind::S_CMP: // CMP
         value.copy< std::string > (that.value);
         break;
@@ -372,13 +398,21 @@ namespace yy {
         value.move< Program* > (that.value);
         break;
 
-      case symbol_kind::S_NUMBER: // "number"
+      case symbol_kind::S_BOOL: // "bool"
+        value.move< bool > (that.value);
+        break;
+
+      case symbol_kind::S_REAL: // "real"
+        value.move< double > (that.value);
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
         value.move< int > (that.value);
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_TYPE: // "type"
-      case symbol_kind::S_BOOLCONST: // "boolconst"
+      case symbol_kind::S_STRING: // "string"
       case symbol_kind::S_CMP: // CMP
         value.move< std::string > (that.value);
         break;
@@ -658,13 +692,21 @@ namespace yy {
         yylhs.value.emplace< Program* > ();
         break;
 
-      case symbol_kind::S_NUMBER: // "number"
+      case symbol_kind::S_BOOL: // "bool"
+        yylhs.value.emplace< bool > ();
+        break;
+
+      case symbol_kind::S_REAL: // "real"
+        yylhs.value.emplace< double > ();
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
         yylhs.value.emplace< int > ();
         break;
 
       case symbol_kind::S_IDENTIFIER: // "identifier"
       case symbol_kind::S_TYPE: // "type"
-      case symbol_kind::S_BOOLCONST: // "boolconst"
+      case symbol_kind::S_STRING: // "string"
       case symbol_kind::S_CMP: // CMP
         yylhs.value.emplace< std::string > ();
         break;
@@ -690,120 +732,138 @@ namespace yy {
           switch (yyn)
             {
   case 2: // unit: assignments exp
-#line 131 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+#line 137 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
                       { yylhs.value.as < Program* > () = new Program(yystack_[1].value.as < AssignmentList* > (), yystack_[0].value.as < Expression* > ()); driver.program = yylhs.value.as < Program* > (); }
-#line 696 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+#line 738 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
   case 3: // assignments: %empty
-#line 134 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+#line 140 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
            { yylhs.value.as < AssignmentList* > () = new AssignmentList(); /* A -> eps */}
-#line 702 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+#line 744 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
   case 4: // assignments: assignments assignment
-#line 135 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+#line 141 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
                              {
         yystack_[1].value.as < AssignmentList* > ()->AddAssignment(yystack_[0].value.as < Assignment* > ()); yylhs.value.as < AssignmentList* > () = yystack_[1].value.as < AssignmentList* > ();
     }
-#line 710 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+#line 752 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
   case 5: // assignment: "identifier" ":=" exp
-#line 141 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+#line 147 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
                           {
         yylhs.value.as < Assignment* > () = new Assignment(yystack_[2].value.as < std::string > (), yystack_[0].value.as < Expression* > ());
         driver.variables[yystack_[2].value.as < std::string > ()] = yystack_[0].value.as < Expression* > ()->eval(); 
     }
-#line 719 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
-    break;
-
-  case 6: // exp: exp CMP exp
-#line 148 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                  { yylhs.value.as < Expression* > () = new ComparisonExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > (), yystack_[1].value.as < std::string > ()); }
-#line 725 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
-    break;
-
-  case 7: // exp: "number"
-#line 149 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-               {yylhs.value.as < Expression* > () = new NumberExpression(yystack_[0].value.as < int > ()); }
-#line 731 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
-    break;
-
-  case 8: // exp: "identifier"
-#line 150 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                   {yylhs.value.as < Expression* > () = new IdentExpression(yystack_[0].value.as < std::string > (), driver.variables[yystack_[0].value.as < std::string > ()]); }
-#line 737 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
-    break;
-
-  case 9: // exp: exp "+" exp
-#line 151 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                  { yylhs.value.as < Expression* > () = new AddExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
-#line 743 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
-    break;
-
-  case 10: // exp: exp "-" exp
-#line 152 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                  { yylhs.value.as < Expression* > () = new SubstractExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
-#line 749 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
-    break;
-
-  case 11: // exp: exp "*" exp
-#line 153 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                  { yylhs.value.as < Expression* > () = new MulExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
-#line 755 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
-    break;
-
-  case 12: // exp: exp "/" exp
-#line 154 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                  { yylhs.value.as < Expression* > () = new DivExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
 #line 761 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
-  case 13: // exp: exp "%" exp
-#line 155 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                  { yylhs.value.as < Expression* > () = new ModExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
+  case 6: // exp: exp CMP exp
+#line 154 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                  { yylhs.value.as < Expression* > () = new ComparisonExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > (), yystack_[1].value.as < std::string > ()); }
 #line 767 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
-  case 14: // exp: exp "&&" exp
-#line 156 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                   { yylhs.value.as < Expression* > () = new AndExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
+  case 7: // exp: "integer"
+#line 155 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                { yylhs.value.as < Expression* > () = new ObjectExpression(yystack_[0].value.as < int > ()); }
 #line 773 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
-  case 15: // exp: exp "||" exp
-#line 157 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                   { yylhs.value.as < Expression* > () = new OrExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
+  case 8: // exp: "real"
+#line 156 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                { yylhs.value.as < Expression* > () = new ObjectExpression(yystack_[0].value.as < double > ()); }
 #line 779 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
-  case 16: // exp: exp "^" exp
-#line 158 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                    { yylhs.value.as < Expression* > () = new XorExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
+  case 9: // exp: "string"
+#line 157 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                { yylhs.value.as < Expression* > () = new ObjectExpression(yystack_[0].value.as < std::string > ()); }
 #line 785 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
-  case 17: // exp: "!" exp
-#line 159 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                    { yylhs.value.as < Expression* > () = new NotExpression(yystack_[0].value.as < Expression* > ()); }
+  case 10: // exp: "bool"
+#line 158 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                { yylhs.value.as < Expression* > () = new ObjectExpression(yystack_[0].value.as < bool > ()); }
 #line 791 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
-  case 18: // exp: "(" exp ")"
-#line 160 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                  { yylhs.value.as < Expression* > () = yystack_[1].value.as < Expression* > (); }
+  case 11: // exp: "identifier"
+#line 159 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                   {yylhs.value.as < Expression* > () = new IdentExpression(yystack_[0].value.as < std::string > (), driver.variables[yystack_[0].value.as < std::string > ()]); }
 #line 797 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
-  case 19: // exp: "-" exp
-#line 161 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                           { yylhs.value.as < Expression* > () = new UnaryMinusExpression(yystack_[0].value.as < Expression* > ()); }
+  case 12: // exp: exp "+" exp
+#line 160 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                  { yylhs.value.as < Expression* > () = new AddExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
 #line 803 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
+  case 13: // exp: exp "-" exp
+#line 161 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                  { yylhs.value.as < Expression* > () = new SubstractExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
+#line 809 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+    break;
 
-#line 807 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+  case 14: // exp: exp "*" exp
+#line 162 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                  { yylhs.value.as < Expression* > () = new MulExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
+#line 815 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+    break;
+
+  case 15: // exp: exp "/" exp
+#line 163 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                  { yylhs.value.as < Expression* > () = new DivExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
+#line 821 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+    break;
+
+  case 16: // exp: exp "%" exp
+#line 164 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                  { yylhs.value.as < Expression* > () = new ModExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
+#line 827 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+    break;
+
+  case 17: // exp: exp "&&" exp
+#line 165 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                   { yylhs.value.as < Expression* > () = new AndExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
+#line 833 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+    break;
+
+  case 18: // exp: exp "||" exp
+#line 166 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                   { yylhs.value.as < Expression* > () = new OrExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
+#line 839 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+    break;
+
+  case 19: // exp: exp "^" exp
+#line 167 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                    { yylhs.value.as < Expression* > () = new XorExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > ()); }
+#line 845 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+    break;
+
+  case 20: // exp: "!" exp
+#line 168 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                    { yylhs.value.as < Expression* > () = new NotExpression(yystack_[0].value.as < Expression* > ()); }
+#line 851 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+    break;
+
+  case 21: // exp: "(" exp ")"
+#line 169 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                  { yylhs.value.as < Expression* > () = yystack_[1].value.as < Expression* > (); }
+#line 857 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+    break;
+
+  case 22: // exp: "-" exp
+#line 170 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+                           { yylhs.value.as < Expression* > () = new UnaryMinusExpression(yystack_[0].value.as < Expression* > ()); }
+#line 863 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+    break;
+
+
+#line 867 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
 
             default:
               break;
@@ -1159,19 +1219,19 @@ namespace yy {
   const signed char
   parser::yypact_[] =
   {
-      -7,     7,    43,    -7,    48,    48,    48,     2,    -7,    -7,
-      25,    -7,    -7,    -7,    14,    48,    48,    48,    48,    48,
-      48,    48,    48,    48,    48,    -7,    25,    -6,    -6,    -7,
-      -7,    -7,    -7,    -6,    -6,    35
+      -7,     7,    48,    -7,    63,    63,    63,     2,    -7,    -7,
+      -7,    -7,    -7,    28,    -7,    -7,    -7,    17,    63,    63,
+      63,    63,    63,    63,    63,    63,    63,    63,    -7,    28,
+      -6,    -6,    -7,    -7,    -7,    -7,    -6,    -6,    40
   };
 
   const signed char
   parser::yydefact_[] =
   {
-       3,     0,     0,     1,     0,     0,     0,     8,     7,     4,
-       2,     8,    19,    17,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    18,     5,    10,     9,    11,
-      12,    13,    14,    15,    16,     6
+       3,     0,     0,     1,     0,     0,     0,    11,     7,     8,
+       9,    10,     4,     2,    11,    22,    20,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    21,     5,
+      13,    12,    14,    15,    16,    17,    18,    19,     6
   };
 
   const signed char
@@ -1183,56 +1243,62 @@ namespace yy {
   const signed char
   parser::yydefgoto_[] =
   {
-      -1,     1,     2,     9,    10
+      -1,     1,     2,    12,    13
   };
 
   const signed char
   parser::yytable_[] =
   {
-      12,    13,    14,    18,    19,    20,    21,     3,    15,     0,
-       0,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    16,    17,    18,    19,    20,    21,    22,    23,     0,
-       0,    25,    16,    17,    18,    19,    20,    21,    22,    23,
-       0,    24,    16,    17,    18,    19,    20,    21,    22,    23,
-       4,     0,    24,     0,     0,     4,     0,     0,     5,     6,
-       0,     0,    -1,     5,     6,     0,     7,     0,     0,     8,
-       0,    11,     0,     0,     8
+      15,    16,    17,    21,    22,    23,    24,     3,    18,     0,
+       0,     0,     0,     0,    29,    30,    31,    32,    33,    34,
+      35,    36,    37,    38,    19,    20,    21,    22,    23,    24,
+      25,    26,     0,     0,    28,    19,    20,    21,    22,    23,
+      24,    25,    26,     0,     0,     0,    27,    19,    20,    21,
+      22,    23,    24,    25,    26,     4,     0,    27,     0,     0,
+       0,     0,     0,     5,     6,     0,     0,     0,     0,    -1,
+       4,     7,     0,     8,     9,    10,    11,     0,     5,     6,
+       0,     0,     0,     0,     0,     0,    14,     0,     8,     9,
+      10,    11
   };
 
   const signed char
   parser::yycheck_[] =
   {
        4,     5,     6,     9,    10,    11,    12,     0,     6,    -1,
-      -1,    15,    16,    17,    18,    19,    20,    21,    22,    23,
-      24,     7,     8,     9,    10,    11,    12,    13,    14,    -1,
-      -1,    17,     7,     8,     9,    10,    11,    12,    13,    14,
-      -1,    27,     7,     8,     9,    10,    11,    12,    13,    14,
-       7,    -1,    27,    -1,    -1,     7,    -1,    -1,    15,    16,
-      -1,    -1,    27,    15,    16,    -1,    23,    -1,    -1,    26,
-      -1,    23,    -1,    -1,    26
+      -1,    -1,    -1,    -1,    18,    19,    20,    21,    22,    23,
+      24,    25,    26,    27,     7,     8,     9,    10,    11,    12,
+      13,    14,    -1,    -1,    17,     7,     8,     9,    10,    11,
+      12,    13,    14,    -1,    -1,    -1,    29,     7,     8,     9,
+      10,    11,    12,    13,    14,     7,    -1,    29,    -1,    -1,
+      -1,    -1,    -1,    15,    16,    -1,    -1,    -1,    -1,    29,
+       7,    23,    -1,    25,    26,    27,    28,    -1,    15,    16,
+      -1,    -1,    -1,    -1,    -1,    -1,    23,    -1,    25,    26,
+      27,    28
   };
 
   const signed char
   parser::yystos_[] =
   {
-       0,    30,    31,     0,     7,    15,    16,    23,    26,    32,
-      33,    23,    33,    33,    33,     6,     7,     8,     9,    10,
-      11,    12,    13,    14,    27,    17,    33,    33,    33,    33,
-      33,    33,    33,    33,    33,    33
+       0,    32,    33,     0,     7,    15,    16,    23,    25,    26,
+      27,    28,    34,    35,    23,    35,    35,    35,     6,     7,
+       8,     9,    10,    11,    12,    13,    14,    29,    17,    35,
+      35,    35,    35,    35,    35,    35,    35,    35,    35
   };
 
   const signed char
   parser::yyr1_[] =
   {
-       0,    29,    30,    31,    31,    32,    33,    33,    33,    33,
-      33,    33,    33,    33,    33,    33,    33,    33,    33,    33
+       0,    31,    32,    33,    33,    34,    35,    35,    35,    35,
+      35,    35,    35,    35,    35,    35,    35,    35,    35,    35,
+      35,    35,    35
   };
 
   const signed char
   parser::yyr2_[] =
   {
-       0,     2,     2,     0,     2,     3,     3,     1,     1,     3,
-       3,     3,     3,     3,     3,     3,     3,     2,     3,     2
+       0,     2,     2,     0,     2,     3,     3,     1,     1,     1,
+       1,     1,     3,     3,     3,     3,     3,     3,     3,     3,
+       2,     3,     2
   };
 
 
@@ -1245,9 +1311,9 @@ namespace yy {
   "\"end of file\"", "error", "\"invalid token\"", "\"begin\"", "\"end\"",
   "\"var\"", "\":=\"", "\"-\"", "\"+\"", "\"*\"", "\"/\"", "\"%\"",
   "\"&&\"", "\"||\"", "\"^\"", "\"!\"", "\"(\"", "\")\"", "\";\"", "\".\"",
-  "\",\"", "i", "\":\"", "\"identifier\"", "\"type\"", "\"boolconst\"",
-  "\"number\"", "CMP", "UMINUS", "$accept", "unit", "assignments",
-  "assignment", "exp", YY_NULLPTR
+  "\",\"", "i", "\":\"", "\"identifier\"", "\"type\"", "\"integer\"",
+  "\"real\"", "\"string\"", "\"bool\"", "CMP", "UMINUS", "$accept", "unit",
+  "assignments", "assignment", "exp", YY_NULLPTR
   };
 #endif
 
@@ -1256,8 +1322,9 @@ namespace yy {
   const unsigned char
   parser::yyrline_[] =
   {
-       0,   131,   131,   134,   135,   141,   148,   149,   150,   151,
-     152,   153,   154,   155,   156,   157,   158,   159,   160,   161
+       0,   137,   137,   140,   141,   147,   154,   155,   156,   157,
+     158,   159,   160,   161,   162,   163,   164,   165,   166,   167,
+     168,   169,   170
   };
 
   void
@@ -1289,9 +1356,9 @@ namespace yy {
 
 
 } // yy
-#line 1293 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+#line 1360 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
 
-#line 163 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
+#line 172 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
 
 
 void

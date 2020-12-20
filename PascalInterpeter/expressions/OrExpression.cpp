@@ -4,6 +4,6 @@ OrExpression::OrExpression(
         Expression *lhs, Expression *rhs
 ): lhs(lhs), rhs(rhs) {}
 
-int OrExpression::eval() const {
-    return ((lhs->eval()) || (rhs->eval()));
+PascalObject OrExpression::eval() const {
+    return PascalObject((lhs->eval()) || (rhs->eval()));
 }
