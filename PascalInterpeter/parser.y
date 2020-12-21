@@ -77,10 +77,9 @@
 %define api.token.prefix {TOK_}
 
 %token
-    EOF 0       "end of file"
+    END 0       "end of file"
     
     BEGIN       "begin"
-    END         "end"
 
     VAR         "var"
 
@@ -134,7 +133,7 @@
 %%
 %start unit;
 
-unit: assignments { $$ = new Program($1, NULL); driver.program = $$; };
+unit: assignments END { $$ = new Program($1, NULL); driver.program = $$; };
 
 assignments:
     %empty { $$ = new AssignmentList(); /* A -> eps */}

@@ -46,9 +46,6 @@ add_executable(
         assignments/Assignment.cpp
         assignments/AssignmentList.cpp
         objects/PascalObject.cpp
-        statements/Statement.cpp
-        statements/StatementList.cpp
-        control_flows/IfFlow.cpp
         Program.cpp
 )
 

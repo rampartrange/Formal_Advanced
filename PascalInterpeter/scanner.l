@@ -91,7 +91,7 @@ type  integer|boolean|real|string
 .          {
                 throw yy::parser::syntax_error(loc, "invalid character: " + std::string(yytext));
            }
-<<EOF>>    return yy::parser::make_EOF (loc);
+<<EOF>>    return yy::parser::make_END (loc);
 %%
 
 yy::parser::symbol_type make_INTEGER(
