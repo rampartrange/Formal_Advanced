@@ -1,6 +1,8 @@
 #include "Assignment.h"
 
+#include <utility>
+
 Assignment::Assignment(
-    const std::string& variable,
+    std::string  variable,
     Expression* expression
-) : variable_(variable), expression_(expression) {}
+) : variable_(std::move(variable)), expression_(expression) {}

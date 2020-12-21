@@ -34,14 +34,14 @@
   ); 
 %}
 
+bool  true|false
 id    [a-zA-Z][a-zA-Z_0-9]*
 int   [0-9]+
 blank [ \t\r]
 real  {int}"."{int}([eE][+-]{int})?
-bool  false|true
 string "\""([^\n\"\\]*(\\[.\n])*)*"\""
 cmp   "<"|">"|"<="|">="|"="|"<>"
-type  integer|boolean|real
+type  integer|boolean|real|string
 
 
 %{
@@ -59,10 +59,7 @@ type  integer|boolean|real
 {blank}+   loc.step ();
 \n+        loc.lines (yyleng); loc.step ();
 
-"-"        {
-              std::cout << loc.begin.line << " " << loc.end.line << std::endl;
-              return yy::parser::make_MINUS  (loc);
-           }
+"-"        return yy::parser::make_MINUS  (loc);       
 "+"        return yy::parser::make_PLUS   (loc);
 "*"        return yy::parser::make_STAR   (loc);
 "div"      return yy::parser::make_DIV    (loc);
@@ -84,15 +81,17 @@ type  integer|boolean|real
 ":"        return yy::parser::make_COLON  (loc);
 
 {cmp}      return yy::parser::make_CMP    (yytext, loc);
+{id}       return yy::parser::make_IDENTIFIER(yytext, loc);
+{type}     return yy::parser::make_TYPE(yytext, loc);
+
 {int}      return make_INTEGER(yytext, loc);
 {real}     return make_REAL(yytext, loc);
 {string}   return make_STRING(yytext, loc);
 {bool}     return make_BOOL(yytext, loc);
-{id}       return yy::parser::make_IDENTIFIER(yytext, loc);
 .          {
                 throw yy::parser::syntax_error(loc, "invalid character: " + std::string(yytext));
            }
-<<EOF>>    return yy::parser::make_END (loc);
+<<EOF>>    return yy::parser::make_EOF (loc);
 %%
 
 yy::parser::symbol_type make_INTEGER(
@@ -118,6 +117,7 @@ yy::parser::symbol_type make_BOOL(
   const std::string &s,
   const yy::parser::location_type& loc
 ) {
+  std::cout << "HERE!" << std::endl;
   bool n = (s == "true") ? true : false;
   return yy::parser::make_BOOL(n, loc);
 }

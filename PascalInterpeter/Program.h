@@ -10,7 +10,7 @@ class Program {
     std::vector<Assignment *> GetAssigments() ;
 
  private:
-    AssignmentList* assignments_;
-    Expression* expression_;
+    AssignmentList* assignments;
+    Expression* expression;
 
 };

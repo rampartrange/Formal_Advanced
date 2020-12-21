@@ -36,9 +36,11 @@ PascalObject::PascalObject(bool value) : intValue(0),
                                          boolValue(value),
                                          type(ObjectType::BOOLEAN) {};
 
-ObjectType PascalObject::GetType() const {
-    return type;
-}
+PascalObject::PascalObject(ObjectType value) : intValue(0),
+                                               doubleValue(0.0),
+                                               stringValue(""),
+                                               boolValue(false),
+                                               type(value) {};
 
 bool AreTypesCorrect(const PascalObject& lhs, const PascalObject& rhs) {
     return lhs.GetType() == rhs.GetType();
@@ -58,6 +60,10 @@ std::string PascalObject::GetStringValue() const {
 
 bool PascalObject::GetBoolValue() const {
     return boolValue;
+}
+
+ObjectType PascalObject::GetType() const {
+    return type;
 }
 
 

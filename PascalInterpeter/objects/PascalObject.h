@@ -24,6 +24,11 @@ public:
     explicit PascalObject(double);
     explicit PascalObject(std::string);
     explicit PascalObject(bool);
+    explicit PascalObject(ObjectType);
+
+    PascalObject(const PascalObject&) = default;
+
+    PascalObject& operator=(const PascalObject&) = default;
 
     ObjectType GetType() const;
 

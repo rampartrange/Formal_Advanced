@@ -731,9 +731,9 @@ namespace yy {
         {
           switch (yyn)
             {
-  case 2: // unit: assignments exp
+  case 2: // unit: assignments
 #line 137 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                      { yylhs.value.as < Program* > () = new Program(yystack_[1].value.as < AssignmentList* > (), yystack_[0].value.as < Expression* > ()); driver.program = yylhs.value.as < Program* > (); }
+                  { yylhs.value.as < Program* > () = new Program(yystack_[0].value.as < AssignmentList* > (), NULL); driver.program = yylhs.value.as < Program* > (); }
 #line 738 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
@@ -762,7 +762,7 @@ namespace yy {
 
   case 6: // exp: exp CMP exp
 #line 154 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
-                  { yylhs.value.as < Expression* > () = new ComparisonExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > (), yystack_[1].value.as < std::string > ()); }
+                { yylhs.value.as < Expression* > () = new ComparisonExpression(yystack_[2].value.as < Expression* > (), yystack_[0].value.as < Expression* > (), yystack_[1].value.as < std::string > ()); }
 #line 767 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
     break;
 
@@ -1212,77 +1212,71 @@ namespace yy {
   }
 
 
-  const signed char parser::yypact_ninf_ = -7;
+  const signed char parser::yypact_ninf_ = -15;
 
   const signed char parser::yytable_ninf_ = -1;
 
   const signed char
   parser::yypact_[] =
   {
-      -7,     7,    48,    -7,    63,    63,    63,     2,    -7,    -7,
-      -7,    -7,    -7,    28,    -7,    -7,    -7,    17,    63,    63,
-      63,    63,    63,    63,    63,    63,    63,    63,    -7,    28,
-      -6,    -6,    -7,    -7,    -7,    -7,    -6,    -6,    40
+     -15,     8,   -14,   -15,    13,   -15,    24,    24,    24,    24,
+     -15,   -15,   -15,   -15,   -15,     4,   -15,   -15,    -7,    24,
+      24,    24,    24,    24,    24,    24,    24,    24,   -15,    25,
+      25,   -15,   -15,   -15,   -15,    25,    25,    16
   };
 
   const signed char
   parser::yydefact_[] =
   {
-       3,     0,     0,     1,     0,     0,     0,    11,     7,     8,
-       9,    10,     4,     2,    11,    22,    20,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    21,     5,
-      13,    12,    14,    15,    16,    17,    18,    19,     6
+       3,     0,     2,     1,     0,     4,     0,     0,     0,     0,
+      11,     7,     8,     9,    10,     5,    22,    20,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    21,    13,
+      12,    14,    15,    16,    17,    18,    19,     6
   };
 
   const signed char
   parser::yypgoto_[] =
   {
-      -7,    -7,    -7,    -7,    -4
+     -15,   -15,   -15,   -15,    34
   };
 
   const signed char
   parser::yydefgoto_[] =
   {
-      -1,     1,     2,    12,    13
+      -1,     1,     2,     5,    15
   };
 
   const signed char
   parser::yytable_[] =
   {
-      15,    16,    17,    21,    22,    23,    24,     3,    18,     0,
-       0,     0,     0,     0,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    19,    20,    21,    22,    23,    24,
-      25,    26,     0,     0,    28,    19,    20,    21,    22,    23,
-      24,    25,    26,     0,     0,     0,    27,    19,    20,    21,
-      22,    23,    24,    25,    26,     4,     0,    27,     0,     0,
-       0,     0,     0,     5,     6,     0,     0,     0,     0,    -1,
-       4,     7,     0,     8,     9,    10,    11,     0,     5,     6,
-       0,     0,     0,     0,     0,     0,    14,     0,     8,     9,
-      10,    11
+      19,    20,    21,    22,    23,    24,    25,    26,     3,     4,
+      28,    19,    20,    21,    22,    23,    24,    25,    26,     6,
+       0,     0,    27,    19,    20,    21,    22,    23,    24,    25,
+      26,     7,     0,    27,    21,    22,    23,    24,     0,     8,
+       9,    16,    17,    18,     0,    -1,     0,    10,     0,    11,
+      12,    13,    14,    29,    30,    31,    32,    33,    34,    35,
+      36,    37
   };
 
   const signed char
   parser::yycheck_[] =
   {
-       4,     5,     6,     9,    10,    11,    12,     0,     6,    -1,
-      -1,    -1,    -1,    -1,    18,    19,    20,    21,    22,    23,
-      24,    25,    26,    27,     7,     8,     9,    10,    11,    12,
-      13,    14,    -1,    -1,    17,     7,     8,     9,    10,    11,
-      12,    13,    14,    -1,    -1,    -1,    29,     7,     8,     9,
-      10,    11,    12,    13,    14,     7,    -1,    29,    -1,    -1,
-      -1,    -1,    -1,    15,    16,    -1,    -1,    -1,    -1,    29,
-       7,    23,    -1,    25,    26,    27,    28,    -1,    15,    16,
-      -1,    -1,    -1,    -1,    -1,    -1,    23,    -1,    25,    26,
-      27,    28
+       7,     8,     9,    10,    11,    12,    13,    14,     0,    23,
+      17,     7,     8,     9,    10,    11,    12,    13,    14,     6,
+      -1,    -1,    29,     7,     8,     9,    10,    11,    12,    13,
+      14,     7,    -1,    29,     9,    10,    11,    12,    -1,    15,
+      16,     7,     8,     9,    -1,    29,    -1,    23,    -1,    25,
+      26,    27,    28,    19,    20,    21,    22,    23,    24,    25,
+      26,    27
   };
 
   const signed char
   parser::yystos_[] =
   {
-       0,    32,    33,     0,     7,    15,    16,    23,    25,    26,
-      27,    28,    34,    35,    23,    35,    35,    35,     6,     7,
+       0,    32,    33,     0,    23,    34,     6,     7,    15,    16,
+      23,    25,    26,    27,    28,    35,    35,    35,    35,     7,
        8,     9,    10,    11,    12,    13,    14,    29,    17,    35,
-      35,    35,    35,    35,    35,    35,    35,    35,    35
+      35,    35,    35,    35,    35,    35,    35,    35
   };
 
   const signed char
@@ -1296,7 +1290,7 @@ namespace yy {
   const signed char
   parser::yyr2_[] =
   {
-       0,     2,     2,     0,     2,     3,     3,     1,     1,     1,
+       0,     2,     1,     0,     2,     3,     3,     1,     1,     1,
        1,     1,     3,     3,     3,     3,     3,     3,     3,     3,
        2,     3,     2
   };
@@ -1356,7 +1350,7 @@ namespace yy {
 
 
 } // yy
-#line 1360 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
+#line 1354 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.cpp"
 
 #line 172 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.y"
 

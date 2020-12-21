@@ -131,10 +131,10 @@
 %nonassoc "!"
 
 
-%start unit
 %%
+%start unit;
 
-unit: assignments exp { $$ = new Program($1, $2); driver.program = $$; };
+unit: assignments { $$ = new Program($1, NULL); driver.program = $$; };
 
 assignments:
     %empty { $$ = new AssignmentList(); /* A -> eps */}
@@ -151,7 +151,7 @@ assignment:
 
 
 exp:
-      exp CMP exp { $$ = new ComparisonExpression($1, $3, $2); }
+    exp CMP exp { $$ = new ComparisonExpression($1, $3, $2); }
     | "integer" { $$ = new ObjectExpression($1); }
     | "real"    { $$ = new ObjectExpression($1); }
     | "string"  { $$ = new ObjectExpression($1); }

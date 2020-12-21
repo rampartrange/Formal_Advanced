@@ -18,7 +18,7 @@ ComparisonType ComparisonExpression::DefineComparisonType(const std::string &sig
         comparisonType = ComparisonType::LE;
     } else if (sign == ">=") {
         comparisonType = ComparisonType::GE;
-    } else if (sign == "==") {
+    } else if (sign == "=") {
         comparisonType = ComparisonType::EQ;
     } else {
         comparisonType = ComparisonType::NE;
@@ -26,8 +26,8 @@ ComparisonType ComparisonExpression::DefineComparisonType(const std::string &sig
     return comparisonType;
 }
 
-int ComparisonExpression::ComputeValue() {
-    bool result = 0;
+bool ComparisonExpression::ComputeValue() {
+    bool result = false;
     switch (type) {
         case ComparisonType::LT : {
             result = lhs->eval() < rhs->eval();

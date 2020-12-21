@@ -19,7 +19,7 @@ public:
     PascalObject eval() const override;
 private:
     ComparisonType DefineComparisonType(const std::string& sign) const;
-    int ComputeValue();
+    bool ComputeValue();
 
     Expression* rhs;
     Expression* lhs;

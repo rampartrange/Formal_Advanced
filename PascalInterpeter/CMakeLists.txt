@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(ParserExampleWithAst)
+project(PascalInterpreter)
 
 set (   CMAKE_CXX_STANDARD 11)
 
@@ -10,26 +10,26 @@ set(
     )
 find_package(BISON REQUIRED)
 BISON_TARGET(
-        MyParserWithAst
+        MyParser
         parser.y
-        ${ParserExampleWithAst_SOURCE_DIR}/parser.cpp
-        DEFINES_FILE ${ParserExampleWithAst_SOURCE_DIR}/parser.hh
+        ${PascalInterpreter_SOURCE_DIR}/parser.cpp
+        DEFINES_FILE ${PascalInterpreter_SOURCE_DIR}/parser.hh
 )
 find_package(FLEX REQUIRED)
 FLEX_TARGET(
-        MyScannerWithAst
+        MyScanner
         scanner.l
-        ${ParserExampleWithAst_SOURCE_DIR}/scanner.cpp
+        ${PascalInterpreter_SOURCE_DIR}/scanner.cpp
 )
 
-ADD_FLEX_BISON_DEPENDENCY(MyScannerWithAst MyParserWithAst)
+ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
 
 add_executable(
-        ParserExampleWithAst
+        PascalInterpreter
         main.cpp
         driver.cpp
-        ${BISON_MyParserWithAst_OUTPUTS}
-        ${FLEX_MyScannerWithAst_OUTPUTS}
+        ${BISON_MyParser_OUTPUTS}
+        ${FLEX_MyScanner_OUTPUTS}
         expressions/ObjectExpression.cpp
         expressions/MulExpression.cpp
         expressions/AddExpression.cpp
@@ -46,11 +46,14 @@ add_executable(
         assignments/Assignment.cpp
         assignments/AssignmentList.cpp
         objects/PascalObject.cpp
+        statements/Statement.cpp
+        statements/StatementList.cpp
+        control_flows/IfFlow.cpp
         Program.cpp
 )
 
 target_include_directories(
-        ParserExampleWithAst PRIVATE ${ParserExampleWithAst_SOURCE_DIR}
+        PascalInterpreter PRIVATE ${PascalInterpreter_SOURCE_DIR}
 )
 
 
