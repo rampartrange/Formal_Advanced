@@ -42,6 +42,32 @@ PascalObject::PascalObject(ObjectType value) : intValue(0),
                                                boolValue(false),
                                                type(value) {};
 
+std::ostream& operator<<(std::ostream& out, const ObjectType& obj) {
+    switch (obj) {
+        case ObjectType::INTEGER: {
+            out << "INTEGER";
+            break;
+        }
+        case ObjectType::REAL: {
+            out << "REAL";
+            break;
+        }
+        case ObjectType::STRING: {
+            out << "STRING";
+            break;
+        }
+        case ObjectType::BOOLEAN: {
+            out << "BOOLEAN";
+            break;
+        }
+        default: {
+            out << "UNDEFINED";
+            break;
+        }
+    }
+    return out;
+}
+
 bool AreTypesCorrect(const PascalObject& lhs, const PascalObject& rhs) {
     return lhs.GetType() == rhs.GetType();
 }
@@ -277,7 +303,7 @@ PascalObject::operator bool() const {
             break;
         }
         case ObjectType::REAL : {
-            result = GetDoubleValue() != 0;
+            result = GetDoubleValue() != 0.;
             break;
         }
         case ObjectType::STRING : {

@@ -2,9 +2,10 @@
 
 Program::Program(
     AssignmentList* assignments,
-    Expression* expression
-): assignments(assignments), expression(expression) {}
+    Expression* expression,
+    DeclarationList* declarations
+): assignments(assignments), expression(expression), declarations(declarations){}
 
-std::vector<Assignment *> Program::GetAssigments() {
+std::vector<AssignmentExpression *> Program::GetAssigments() {
     return assignments->GetAssigments();
 }

@@ -3,5 +3,5 @@
 NotExpression::NotExpression(Expression* lhs) : lhs(lhs) {}
 
 PascalObject NotExpression::eval() const {
-    return PascalObject(!(lhs->eval()));
+    return PascalObject(static_cast<bool>(!(lhs->eval())));
 }

@@ -66,12 +66,14 @@
 
     class PascalObject;
 
-    class Assignment;
+    class AssignmentExpression;
     class AssignmentList;
+    class DeclarationList;
+    class IdentList;
 
     class Program;
 
-#line 75 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
+#line 77 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -205,7 +207,7 @@
 #endif
 
 namespace yy {
-#line 209 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
+#line 211 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
 
 
 
@@ -420,31 +422,40 @@ namespace yy {
     union union_type
     {
       // assignment
-      char dummy1[sizeof (Assignment*)];
+      char dummy1[sizeof (AssignmentExpression*)];
 
+      // MainBlock
       // assignments
       char dummy2[sizeof (AssignmentList*)];
 
+      // DeclBlock
+      // declarations
+      char dummy3[sizeof (DeclarationList*)];
+
       // exp
-      char dummy3[sizeof (Expression*)];
+      char dummy4[sizeof (Expression*)];
+
+      // IdentList
+      // IdentListSeq
+      char dummy5[sizeof (IdentList*)];
 
       // unit
-      char dummy4[sizeof (Program*)];
+      char dummy6[sizeof (Program*)];
 
       // "bool"
-      char dummy5[sizeof (bool)];
+      char dummy7[sizeof (bool)];
 
       // "real"
-      char dummy6[sizeof (double)];
+      char dummy8[sizeof (double)];
 
       // "integer"
-      char dummy7[sizeof (int)];
+      char dummy9[sizeof (int)];
 
       // "identifier"
       // "type"
       // "string"
       // CMP
-      char dummy8[sizeof (std::string)];
+      char dummy10[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -493,36 +504,37 @@ namespace yy {
       enum token_kind_type
       {
         TOK_YYEMPTY = -2,
-    TOK_END = 0,                   // "end of file"
+    TOK_EOF = 0,                   // "end of file"
     TOK_YYerror = 256,             // error
     TOK_YYUNDEF = 257,             // "invalid token"
     TOK_BEGIN = 258,               // "begin"
-    TOK_VAR = 259,                 // "var"
-    TOK_ASSIGN = 260,              // ":="
-    TOK_MINUS = 261,               // "-"
-    TOK_PLUS = 262,                // "+"
-    TOK_STAR = 263,                // "*"
-    TOK_DIV = 264,                 // "/"
-    TOK_MOD = 265,                 // "%"
-    TOK_AND = 266,                 // "&&"
-    TOK_OR = 267,                  // "||"
-    TOK_XOR = 268,                 // "^"
-    TOK_NOT = 269,                 // "!"
-    TOK_LPAREN = 270,              // "("
-    TOK_RPAREN = 271,              // ")"
-    TOK_SEMICOLON = 272,           // ";"
-    TOK_POINT = 273,               // "."
-    TOK_COMMA = 274,               // ","
-    TOK_i = 275,                   // i
-    TOK_COLON = 276,               // ":"
-    TOK_IDENTIFIER = 277,          // "identifier"
-    TOK_TYPE = 278,                // "type"
-    TOK_INTEGER = 279,             // "integer"
-    TOK_REAL = 280,                // "real"
-    TOK_STRING = 281,              // "string"
-    TOK_BOOL = 282,                // "bool"
-    TOK_CMP = 283,                 // CMP
-    TOK_UMINUS = 284               // UMINUS
+    TOK_END = 259,                 // "end"
+    TOK_VAR = 260,                 // "var"
+    TOK_ASSIGN = 261,              // ":="
+    TOK_MINUS = 262,               // "-"
+    TOK_PLUS = 263,                // "+"
+    TOK_STAR = 264,                // "*"
+    TOK_DIV = 265,                 // "/"
+    TOK_MOD = 266,                 // "%"
+    TOK_AND = 267,                 // "&&"
+    TOK_OR = 268,                  // "||"
+    TOK_XOR = 269,                 // "^"
+    TOK_NOT = 270,                 // "!"
+    TOK_LPAREN = 271,              // "("
+    TOK_RPAREN = 272,              // ")"
+    TOK_SEMICOLON = 273,           // ";"
+    TOK_POINT = 274,               // "."
+    TOK_COMMA = 275,               // ","
+    TOK_i = 276,                   // i
+    TOK_COLON = 277,               // ":"
+    TOK_IDENTIFIER = 278,          // "identifier"
+    TOK_TYPE = 279,                // "type"
+    TOK_INTEGER = 280,             // "integer"
+    TOK_REAL = 281,                // "real"
+    TOK_STRING = 282,              // "string"
+    TOK_BOOL = 283,                // "bool"
+    TOK_CMP = 284,                 // CMP
+    TOK_UMINUS = 285               // UMINUS
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -539,43 +551,49 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 30, ///< Number of tokens.
+        YYNTOKENS = 31, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
         S_YYUNDEF = 2,                           // "invalid token"
         S_BEGIN = 3,                             // "begin"
-        S_VAR = 4,                               // "var"
-        S_ASSIGN = 5,                            // ":="
-        S_MINUS = 6,                             // "-"
-        S_PLUS = 7,                              // "+"
-        S_STAR = 8,                              // "*"
-        S_DIV = 9,                               // "/"
-        S_MOD = 10,                              // "%"
-        S_AND = 11,                              // "&&"
-        S_OR = 12,                               // "||"
-        S_XOR = 13,                              // "^"
-        S_NOT = 14,                              // "!"
-        S_LPAREN = 15,                           // "("
-        S_RPAREN = 16,                           // ")"
-        S_SEMICOLON = 17,                        // ";"
-        S_POINT = 18,                            // "."
-        S_COMMA = 19,                            // ","
-        S_i = 20,                                // i
-        S_COLON = 21,                            // ":"
-        S_IDENTIFIER = 22,                       // "identifier"
-        S_TYPE = 23,                             // "type"
-        S_INTEGER = 24,                          // "integer"
-        S_REAL = 25,                             // "real"
-        S_STRING = 26,                           // "string"
-        S_BOOL = 27,                             // "bool"
-        S_CMP = 28,                              // CMP
-        S_UMINUS = 29,                           // UMINUS
-        S_YYACCEPT = 30,                         // $accept
-        S_unit = 31,                             // unit
-        S_assignments = 32,                      // assignments
-        S_assignment = 33,                       // assignment
-        S_exp = 34                               // exp
+        S_END = 4,                               // "end"
+        S_VAR = 5,                               // "var"
+        S_ASSIGN = 6,                            // ":="
+        S_MINUS = 7,                             // "-"
+        S_PLUS = 8,                              // "+"
+        S_STAR = 9,                              // "*"
+        S_DIV = 10,                              // "/"
+        S_MOD = 11,                              // "%"
+        S_AND = 12,                              // "&&"
+        S_OR = 13,                               // "||"
+        S_XOR = 14,                              // "^"
+        S_NOT = 15,                              // "!"
+        S_LPAREN = 16,                           // "("
+        S_RPAREN = 17,                           // ")"
+        S_SEMICOLON = 18,                        // ";"
+        S_POINT = 19,                            // "."
+        S_COMMA = 20,                            // ","
+        S_i = 21,                                // i
+        S_COLON = 22,                            // ":"
+        S_IDENTIFIER = 23,                       // "identifier"
+        S_TYPE = 24,                             // "type"
+        S_INTEGER = 25,                          // "integer"
+        S_REAL = 26,                             // "real"
+        S_STRING = 27,                           // "string"
+        S_BOOL = 28,                             // "bool"
+        S_CMP = 29,                              // CMP
+        S_UMINUS = 30,                           // UMINUS
+        S_YYACCEPT = 31,                         // $accept
+        S_unit = 32,                             // unit
+        S_DeclBlock = 33,                        // DeclBlock
+        S_declarations = 34,                     // declarations
+        S_IdentList = 35,                        // IdentList
+        S_IdentListSeq = 36,                     // IdentListSeq
+        S_MainBlock = 37,                        // MainBlock
+        S_assignments = 38,                      // assignments
+        S_assignment = 39,                       // assignment
+        S_exp = 40                               // exp
       };
     };
 
@@ -613,15 +631,26 @@ namespace yy {
         switch (this->kind ())
     {
       case symbol_kind::S_assignment: // assignment
-        value.move< Assignment* > (std::move (that.value));
+        value.move< AssignmentExpression* > (std::move (that.value));
         break;
 
+      case symbol_kind::S_MainBlock: // MainBlock
       case symbol_kind::S_assignments: // assignments
         value.move< AssignmentList* > (std::move (that.value));
         break;
 
+      case symbol_kind::S_DeclBlock: // DeclBlock
+      case symbol_kind::S_declarations: // declarations
+        value.move< DeclarationList* > (std::move (that.value));
+        break;
+
       case symbol_kind::S_exp: // exp
         value.move< Expression* > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_IdentList: // IdentList
+      case symbol_kind::S_IdentListSeq: // IdentListSeq
+        value.move< IdentList* > (std::move (that.value));
         break;
 
       case symbol_kind::S_unit: // unit
@@ -671,13 +700,13 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, Assignment*&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, AssignmentExpression*&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const Assignment*& v, const location_type& l)
+      basic_symbol (typename Base::kind_type t, const AssignmentExpression*& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -699,6 +728,20 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, DeclarationList*&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const DeclarationList*& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
       basic_symbol (typename Base::kind_type t, Expression*&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
@@ -706,6 +749,20 @@ namespace yy {
       {}
 #else
       basic_symbol (typename Base::kind_type t, const Expression*& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, IdentList*&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const IdentList*& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -805,15 +862,26 @@ namespace yy {
 switch (yykind)
     {
       case symbol_kind::S_assignment: // assignment
-        value.template destroy< Assignment* > ();
+        value.template destroy< AssignmentExpression* > ();
         break;
 
+      case symbol_kind::S_MainBlock: // MainBlock
       case symbol_kind::S_assignments: // assignments
         value.template destroy< AssignmentList* > ();
         break;
 
+      case symbol_kind::S_DeclBlock: // DeclBlock
+      case symbol_kind::S_declarations: // declarations
+        value.template destroy< DeclarationList* > ();
+        break;
+
       case symbol_kind::S_exp: // exp
         value.template destroy< Expression* > ();
+        break;
+
+      case symbol_kind::S_IdentList: // IdentList
+      case symbol_kind::S_IdentListSeq: // IdentListSeq
+        value.template destroy< IdentList* > ();
         break;
 
       case symbol_kind::S_unit: // unit
@@ -933,7 +1001,7 @@ switch (yykind)
         : super_type(token_type (tok), l)
 #endif
       {
-        YY_ASSERT (tok == token::TOK_END
+        YY_ASSERT (tok == token::TOK_EOF
                    || (token::TOK_YYerror <= tok && tok <= token::TOK_COLON)
                    || tok == token::TOK_UMINUS);
       }
@@ -1030,16 +1098,16 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_END (location_type l)
+      make_EOF (location_type l)
       {
-        return symbol_type (token::TOK_END, std::move (l));
+        return symbol_type (token::TOK_EOF, std::move (l));
       }
 #else
       static
       symbol_type
-      make_END (const location_type& l)
+      make_EOF (const location_type& l)
       {
-        return symbol_type (token::TOK_END, l);
+        return symbol_type (token::TOK_EOF, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1085,6 +1153,21 @@ switch (yykind)
       make_BEGIN (const location_type& l)
       {
         return symbol_type (token::TOK_BEGIN, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_END (location_type l)
+      {
+        return symbol_type (token::TOK_END, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_END (const location_type& l)
+      {
+        return symbol_type (token::TOK_END, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1807,9 +1890,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 62,     ///< Last index in yytable_.
-      yynnts_ = 5,  ///< Number of nonterminal symbols.
-      yyfinal_ = 3 ///< Termination state number.
+      yylast_ = 77,     ///< Last index in yytable_.
+      yynnts_ = 10,  ///< Number of nonterminal symbols.
+      yyfinal_ = 5 ///< Termination state number.
     };
 
 
@@ -1857,10 +1940,10 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29
+      25,    26,    27,    28,    29,    30
     };
     // Last valid token kind.
-    const int code_max = 284;
+    const int code_max = 285;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1880,15 +1963,26 @@ switch (yykind)
     switch (this->kind ())
     {
       case symbol_kind::S_assignment: // assignment
-        value.copy< Assignment* > (YY_MOVE (that.value));
+        value.copy< AssignmentExpression* > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_MainBlock: // MainBlock
       case symbol_kind::S_assignments: // assignments
         value.copy< AssignmentList* > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_DeclBlock: // DeclBlock
+      case symbol_kind::S_declarations: // declarations
+        value.copy< DeclarationList* > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_exp: // exp
         value.copy< Expression* > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_IdentList: // IdentList
+      case symbol_kind::S_IdentListSeq: // IdentListSeq
+        value.copy< IdentList* > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_unit: // unit
@@ -1944,15 +2038,26 @@ switch (yykind)
     switch (this->kind ())
     {
       case symbol_kind::S_assignment: // assignment
-        value.move< Assignment* > (YY_MOVE (s.value));
+        value.move< AssignmentExpression* > (YY_MOVE (s.value));
         break;
 
+      case symbol_kind::S_MainBlock: // MainBlock
       case symbol_kind::S_assignments: // assignments
         value.move< AssignmentList* > (YY_MOVE (s.value));
         break;
 
+      case symbol_kind::S_DeclBlock: // DeclBlock
+      case symbol_kind::S_declarations: // declarations
+        value.move< DeclarationList* > (YY_MOVE (s.value));
+        break;
+
       case symbol_kind::S_exp: // exp
         value.move< Expression* > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_IdentList: // IdentList
+      case symbol_kind::S_IdentListSeq: // IdentListSeq
+        value.move< IdentList* > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_unit: // unit
@@ -2040,7 +2145,7 @@ switch (yykind)
   }
 
 } // yy
-#line 2044 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
+#line 2149 "/Users/rampartrange/CompilersCourse/03-parsers-with-ast/parser.hh"
 
 
 

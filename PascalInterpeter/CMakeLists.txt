@@ -43,11 +43,12 @@ add_executable(
         expressions/OrExpression.cpp
         expressions/XorExpression.cpp
         expressions/NotExpression.cpp
-        assignments/Assignment.cpp
+        expressions/AssignmentExpression.cpp
         assignments/AssignmentList.cpp
         objects/PascalObject.cpp
         Program.cpp
-)
+        assignments/DeclarationList.cpp
+        assignments/IdentList.cpp)
 
 target_include_directories(
         PascalInterpreter PRIVATE ${PascalInterpreter_SOURCE_DIR}

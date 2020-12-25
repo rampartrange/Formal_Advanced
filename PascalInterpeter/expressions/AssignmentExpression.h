@@ -4,9 +4,9 @@
 
 #include <string>
 
-class Assignment {
+class AssignmentExpression {
  public:
-    Assignment(std::string  variable, Expression* expression);
+    AssignmentExpression(std::string  variable, Expression* expression);
  private:
     std::string variable_;
     Expression* expression_;

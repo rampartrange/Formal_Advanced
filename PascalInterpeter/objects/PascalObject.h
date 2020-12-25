@@ -11,6 +11,8 @@ enum class ObjectType {
     UNDEFINED
 };
 
+std::ostream& operator<<(std::ostream& out, const ObjectType& obj);
+
 enum class BooleanConstant : int {
     False = 0,
     True = 1

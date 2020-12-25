@@ -1,10 +1,10 @@
 #include "AssignmentList.h"
 
 
-void AssignmentList::AddAssignment(Assignment* assignment) {
+void AssignmentList::AddAssignment(AssignmentExpression* assignment) {
     assignments_.push_back(assignment);
 }
 
-std::vector<Assignment*> AssignmentList::GetAssigments() {
+std::vector<AssignmentExpression*> AssignmentList::GetAssigments() {
     return assignments_;
 }

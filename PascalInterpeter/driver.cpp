@@ -19,7 +19,8 @@ int Driver::parse(const std::string& f) {
 
     scan_end();
     for (const auto& now : variables) {
-        std::cout << now.first << " " << now.second << std::endl;
+        std::cout << now.second.GetType() << ": ";
+        std::cout << now.first << " := " << now.second << std::endl;
     }
 
     return res;

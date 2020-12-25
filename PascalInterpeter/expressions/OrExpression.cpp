@@ -5,5 +5,5 @@ OrExpression::OrExpression(
 ): lhs(lhs), rhs(rhs) {}
 
 PascalObject OrExpression::eval() const {
-    return PascalObject((lhs->eval()) || (rhs->eval()));
+    return PascalObject(static_cast<bool>((lhs->eval()) || (rhs->eval())));
 }
